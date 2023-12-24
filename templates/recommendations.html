@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recipe Recommendations</title>
+    <style>
+        body {
+            font-family: Bahnschrift;
+            background-color: #212121  ;
+            margin: 0;
+            padding: 0;
+        }
+        h2 {
+            text-align: center;
+            color: #FFFFFF  ;
+            text-shadow: 2px 2px #ff0000;
+
+        }
+
+        .recommendations-container {
+            max-width: 500px;
+            margin: 20px auto;
+            background-color: #000000 ;
+            border-radius: 5px;
+            box-shadow: 0 0 20px #FE0065  ;
+            padding: 20px;
+            text-color: #FFF
+        }
+        .recommendations-container2 {
+            max-width: 500px;
+            margin: 20px auto;
+            background-color: #000000 ;
+            border-radius: 5px;
+            padding: 20px;
+            color: #FFF
+        }
+
+        .recommendation {
+            margin-bottom: 20px;
+        }
+
+        .recipe-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: left;
+            color: #FFFFFF;
+            text-shadow: 2px 2px #0B7600;
+        }
+
+        .recipe-step {
+            margin-top: 20px;
+        }
+
+        .recipe-step h4 {
+            font-size: 16px;
+        }
+
+        .recipe-step ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .recipe-step li {
+            margin-bottom: 5px;
+        }
+
+        .ingredient-container {
+            display: block;
+            justify-content: space-between;
+        }
+
+        .ingredient-column {
+            width: 80%;
+            text-align: center;
+        }
+
+        .ingredient-column table {
+            width: 125%;
+            border-collapse: collapse;
+        }
+
+        .ingredient-column th,
+        .ingredient-column td {
+            padding: 8px;
+            border: 2px solid #000;
+        }
+
+        .rounded-rectangle1 {
+            border-radius: 20px;
+            padding: 10px;
+            margin-bottom: 50px;
+            background-color: #5FD68C  ;
+            box-shadow: 0 0 20px #7800FE  ;
+        }
+        .rounded-rectangle2 {
+            border-radius: 20px;
+            padding: 10px;
+            background-color: #FFF;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px #FF0000    ;
+        }
+        .chat-form input[type="submit"] {
+            padding: 11px 20px;
+            background-color: #EF1D1D;
+            border: none;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .chat-form {
+            margin-top: 10px;
+        }
+
+        .chat-form input[type="text"] {
+            width: 93%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-left:2px;
+        }
+        .chat-form input[type="submit"] {
+            padding: 11px 20px;
+            background-color: #EF1D1D;
+            border: none;
+            margin-top: 30px;
+            margin-bottom: 5px;
+            margin-left: 180px;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .chat-history {
+            margin-top: 20px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #F0F0F0;
+            max-height: 200px;
+            overflow-y: scroll;
+            box-shadow: 0 0 20px #09FE00 ;
+        }
+
+        .chat-history .user-message {
+            color: #000;
+            font-weight: bold;
+        }
+
+        .chat-history .bot-message {
+            color: #000;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="recommendations-container">
+        <h2>RECOMMENDED RECIPES</h2>
+            {% for index, row in recommendations.iterrows() %}
+                <div class="recommendation">
+                    <ul>
+                        <div class="recipe-name">
+                            <li>{{ row['title'] }}</li>
+                        </div>
+                    </ul>
+                    <div class="rounded-rectangle2 recipe-step">
+                        <h4>INGREDIENTS:</h4>
+                        <div class="ingredient-container">
+                            <div class="ingredient-column">
+                                <table>
+                                    {% for ingredient, amount in row['ingredients'].items() %}
+                                        <tr>
+                                            <th>{{ ingredient }}</th>
+                                            <td>{{ amount }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rounded-rectangle1 recipe-step">
+                        <h4>STEPS TO PREPARE:</h4>
+                        <ol>
+                            {% for index, instructions in row['directions'].items() %}
+                                <li>{{ instructions }}</li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+            {% endfor %}
+
+        <h2>Chat History:</h2>
+        <div class="chat-history">
+            <ul>
+                {% for conversation in chat_history %}
+                    {% if conversation['BOT'] == 'No recipes found. Try again.' or conversation['BOT'] == 'Please separate multiple words with a comma.' %}
+                        <li>
+                            <p class="bot-message">Bot: {{ conversation['BOT'] }}</p>
+                            <p class="user-message">User: {{ conversation['USER'] }}</p>
+                        </li>
+                    {% else %}
+                        <li>
+                            <p class="user-message">User: {{ conversation['USER'] }}</p>
+                            <p class="bot-message">Bot: {{ conversation['BOT'] }}</p>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <form class="chat-form" action="/recommend" method="POST">
+            <input type="text" name="user_input" placeholder="Type your preferences here with commas" required autocomplete="off" />
+            <input type="submit" value="Recommend" />
+        </form>
+    </div>
+</body>
+</html>

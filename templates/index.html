@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Bahnschrift;
+            background-color: #ffff;
+            margin-left:15px;
+            padding: 0;
+        }
+        h1{
+            text-align = 'center';
+        }
+        .chat-container {
+            max-width: 500px;
+            max-height: 300px;
+            margin: 25px auto;
+            background-color: #000000;
+            border-radius: 5px;
+            box-shadow: 0 0 30px #FF0400 ;
+            padding: 30px;
+        }
+
+        .chat-messages {
+            max-height: 300px;
+
+        }
+
+        .user-message,
+        .bot-message {
+            margin-bottom: 10px;
+        }
+
+        .user-message .message-text {
+            background-color: #ffff;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .bot-message .message-text {
+            background-color: #d3e4ee;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .bot-message .message-text2 {
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            display: block;
+            margin-right: 10px;
+        }
+
+        .chat-form {
+            margin-top: 10px;
+        }
+
+        .chat-form input[type="text"] {
+            width: 93%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-left:2px;
+        }
+
+        .chat-form input[type="submit"] {
+            padding: 11px 20px;
+            background-color: #EF1D1D;
+            border: none;
+            margin-top: 30px;
+            margin-bottom: 5px;
+            margin-left: 180px;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Recipe Recommendations Bot</h1>
+        <div class="chat-container">
+                <div class="chat-messages">
+                    <div class="bot-message">
+                        <span class="message-text">Hello! I'm the Recipe Recommendation Chatbot. How can I assist you today?
+                        </span>
+                        <br><br>
+                        <span class="message-text2">
+                            Intructions:
+                            <ul>
+                                <li>Don't use special characters while entering input</li>
+                                <li>Use commas when entering multiple words</li>
+                            </ul>
+                        </span>
+                    </div>
+                </div>
+        <form class="chat-form" action="/recommend" method="POST">
+                    <input type="text" name="user_input" placeholder="Type your recipe preferences here without commas" required autocomplete="off" />
+                    <input type="submit" value="Recommend">
+        </form>
+        </div>
+</body>
+</html>
